@@ -23,8 +23,22 @@ public class Mainapp {
 		
 		Session session = factory.getCurrentSession();
 		
+		Client client = new Client();
+		client.setId(1);
+		client.setFullName("Mostafa ado");
+		client.setAge(25);
+		client.setAddress("Menia matay");
 		
-		
+		try {
+			session.beginTransaction();
+			session.save(client);
+			session.getTransaction().commit();
+			
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}finally {
+			session.close();
+		}
 		
 		
 		
