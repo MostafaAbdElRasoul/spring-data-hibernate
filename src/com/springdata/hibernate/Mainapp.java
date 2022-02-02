@@ -22,17 +22,24 @@ public class Mainapp {
 		
 		
 		Session session = factory.getCurrentSession();
-		
-		Client client = new Client();
-		client.setId(1);
-		client.setFullName("Mostafa ado");
-		client.setAge(25);
-		client.setAddress("Menia matay");
-		
+		/*
+		// client 1
+		Client client1 = new Client("adsadaaasad", 25, "Menia matay");
+		//client1.setId(1);
+		// client 2
+		Client client2 = new Client("adsadsdddddddddad", 25, "Menia matay");
+		//client2.setId(2);
+		// client 3
+		Client client3 = new Client("adsad", 25, "Menia matay");
+		//client3.setId(3);
+		*/
+		long id = 1;
 		try {
 			session.beginTransaction();
-			session.save(client);
+			Client client = session.get(Client.class, id);
+
 			session.getTransaction().commit();
+			System.out.println(client.getFullName()+" "+client.getAge()+" "+client.getAddress());
 			
 		} catch (Exception e) {
 			System.out.println(e.toString());
