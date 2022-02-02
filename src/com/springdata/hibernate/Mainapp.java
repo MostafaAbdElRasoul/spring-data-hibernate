@@ -1,5 +1,10 @@
 package com.springdata.hibernate;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.Query;
+
 //import java.sql.Connection;
 //import java.sql.DriverManager;
 //import java.sql.SQLException;
@@ -47,10 +52,35 @@ public class Mainapp {
 			client.setId(id);
 			session.update(client);
 			*/
+			/*  //delete
 			Client client = new Client();
 			client.setId(id);
 			session.delete(client);
-			
+			*/
+			//List<Client> clients = 
+			/*Query query =
+					session.
+					createQuery("from Client where id =:v1");
+					//.list();
+			//query.setFirstResult(0);
+			//query.setMaxResults(2);
+			query.setInteger("v1", 4);
+			List<Client> clients = query.list();
+			for (int i = 0; i < clients.size(); i++) {
+				System.out.println(clients.get(i).getFullName()+" "+clients.get(i).getAge());
+			}*/
+			Query q1 = session.createQuery("select Max(id) from Client");
+			Query q2 = session.createQuery("select Min(id) from Client");
+			Query q3 = session.createQuery("select sum(id) from Client");
+			Query q4 = session.createQuery("select avg(id) from Client");
+			Query q5 = session.createQuery("select count(address) from Client");
+			Query q6 = session.createQuery("select count(distinct address) from Client");
+			System.out.println("Max : "+q1.list().get(0));
+			System.out.println("Min : "+q2.list().get(0));
+			System.out.println("sum : "+q3.list().get(0));
+			System.out.println("avg : "+q4.list().get(0));
+			System.out.println("count : "+q5.list().get(0));
+			System.out.println("count distinct : "+q6.list().get(0));
 			session.getTransaction().commit();
 			//System.out.println(client.getFullName()+" "+client.getAge()+" "+client.getAddress());
 			
