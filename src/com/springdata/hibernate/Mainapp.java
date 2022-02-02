@@ -36,10 +36,23 @@ public class Mainapp {
 		long id = 1;
 		try {
 			session.beginTransaction();
+			/* ///update
 			Client client = session.get(Client.class, id);
-
+			client.setAge(45);
+			client.setFullName("mmomomo");
+			*/
+			/*
+			 * ///update
+			Client client = new Client("mo salah", 30, "cairoo");
+			client.setId(id);
+			session.update(client);
+			*/
+			Client client = new Client();
+			client.setId(id);
+			session.delete(client);
+			
 			session.getTransaction().commit();
-			System.out.println(client.getFullName()+" "+client.getAge()+" "+client.getAddress());
+			//System.out.println(client.getFullName()+" "+client.getAge()+" "+client.getAddress());
 			
 		} catch (Exception e) {
 			System.out.println(e.toString());
