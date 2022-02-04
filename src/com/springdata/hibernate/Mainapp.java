@@ -3,6 +3,7 @@ package com.springdata.hibernate;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 
 //import java.sql.Connection;
@@ -12,6 +13,11 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 import com.springdata.hibernate.model.Client;
 
@@ -69,6 +75,7 @@ public class Mainapp {
 			for (int i = 0; i < clients.size(); i++) {
 				System.out.println(clients.get(i).getFullName()+" "+clients.get(i).getAge());
 			}*/
+			/*
 			Query q1 = session.createQuery("select Max(id) from Client");
 			Query q2 = session.createQuery("select Min(id) from Client");
 			Query q3 = session.createQuery("select sum(id) from Client");
@@ -81,9 +88,36 @@ public class Mainapp {
 			System.out.println("avg : "+q4.list().get(0));
 			System.out.println("count : "+q5.list().get(0));
 			System.out.println("count distinct : "+q6.list().get(0));
-			session.getTransaction().commit();
-			//System.out.println(client.getFullName()+" "+client.getAge()+" "+client.getAddress());
+			*/
+			Criteria c = session.createCriteria(Client.class);
+			//c.setFirstResult(0);
+			//c.setMaxResults(4);
+			//c.add(Restrictions.between("id", (long)4, (long)8));
+			//c.add(Restrictions.isNull("address"));
+			//c.add(Restrictions.like("fullName", "o", MatchMode.ANYWHERE));
+			//Long [] ids = {(long)4,(long)8,(long)9};
+			//c.add(Restrictions.in("id", ids));
+			/*
+			Criterion c1 =Restrictions.eq("address", "egy");
+			Criterion c2 = Restrictions.eq("fullName", "momo");
+			LogicalExpression exp = Restrictions.and(c1, c2);
+			c.add(exp);
+			*/
+			//c.setProjection(Projections.min("id"));
+			//c.setProjection(Projections.sum("id"));
+			//c.setProjection(Projections.avg("id"));
+			//c.setProjection(Projections.count("address"));
+			c.setProjection(Projections.countDistinct("address"));
 			
+			List<Client> clients = c.list();
+			System.out.println("  : "+clients.get(0));
+			session.getTransaction().commit();
+			/*
+			for (int i = 0; i < clients.size(); i++) {
+				System.out.println(clients.get(i).getFullName()+" "+clients.get(i).getAge());
+			}
+			//System.out.println(client.getFullName()+" "+client.getAge()+" "+client.getAddress());
+			*/
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}finally {
