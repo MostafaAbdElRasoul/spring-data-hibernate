@@ -21,7 +21,9 @@ import org.hibernate.criterion.Restrictions;
 
 import com.springdata.hibernate.model.Client;
 import com.springdata.hibernate.model.Data;
+import com.springdata.hibernate.model.Info;
 import com.springdata.hibernate.model.Person;
+import com.springdata.hibernate.model.Student;
 
 public class Mainapp {
 
@@ -30,54 +32,59 @@ public class Mainapp {
 		
 		SessionFactory factory = new Configuration ()
         						.configure("hibernate.cfg.xml")
-        						.addAnnotatedClass(Person.class)
-        						.addAnnotatedClass(Data.class)
+        						.addAnnotatedClass(Student.class)
+        						.addAnnotatedClass(Info.class)
         						.buildSessionFactory();
 		
 		
 		Session session = factory.getCurrentSession();
 
-		int id = 1;
+		int id = 2;
 		try {
 			session.beginTransaction();
 			/*
-			 * PERSIST
-			Person person = new Person();
-			person.setName("mostaa");
+			 * Add data  (many to one - one to many)
+			Student student = new Student();
+			student.setName("momo");
 			
-			Data data = new Data();
-			data.setAge("24");
-			session.save(person);
-			data.setPerson(person);
+			Info info1 = new Info();
+			info1.setPhone("01234452424");
+			info1.setStudent(student);
 			
-			session.save(data);
+			Info info2 = new Info();
+			info2.setPhone("015344520d00");
+			info2.setStudent(student);
 			
-*/
-			/*
-			 * Remove
-			Data data = new Data();
-			data.setId(2);
-			Data d = session.get(Data.class, data.getId());
-			System.out.println("Name : "+d.getPerson().getName());
-			System.out.println("Age : "+d.getAge());
-		
-
-			session.delete(d);
+			student.getInfos().add(info1);
+			student.getInfos().add(info2);
+			session.save(student);
 			*/
 			/*
-			 * Merge
-			Data data = new Data();
-			data.setId(2);
-			Data d = session.get(Data.class, data.getId());
-			System.out.println("Name : "+d.getPerson().getName());
-			System.out.println("Age : "+d.getAge());
-			d.getPerson().setName("mosta");
-			d.setAge("19");
-			 */
-			Person p = new Person();
-			p.setId(1);
-			Person person = session.get(Person.class, p.getId());
-			session.delete(person);
+			 *  Get data (many to one - one to many)
+			Student student = new Student();
+			student = session.get(Student.class, id);
+			
+			System.out.println(student.getName());
+			
+			for(Info info : student.getInfos()) {
+				System.out.println(info.getPhone());
+			}
+			*/
+			/*
+			 * Update data (many to one - one to many)
+			Student student = session.get(Student.class, id);
+			
+			student.setName("Mo salaaah");
+			student.getInfos().get(0).setPhone("012");
+			student.getInfos().get(2).setPhone("010");
+			*/
+			/*
+			 * Delete data (many to one - one to many)
+			Student student = session.get(Student.class, id);
+			session.delete(student);
+			*/
+			Student student = session.get(Student.class, id);
+			
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -194,6 +201,46 @@ public class Mainapp {
 			System.out.println(clients.get(i).getFullName()+" "+clients.get(i).getAge());
 		}
 		//System.out.println(client.getFullName()+" "+client.getAge()+" "+client.getAddress());
+		*/
+		/*
+		 * PERSIST
+		Person person = new Person();
+		person.setName("mostaa");
+		
+		Data data = new Data();
+		data.setAge("24");
+		session.save(person);
+		data.setPerson(person);
+		
+		session.save(data);
+		
+*/
+		/*
+		 * Remove
+		Data data = new Data();
+		data.setId(2);
+		Data d = session.get(Data.class, data.getId());
+		System.out.println("Name : "+d.getPerson().getName());
+		System.out.println("Age : "+d.getAge());
+	
+
+		session.delete(d);
+		*/
+		/*
+		 * Merge
+		Data data = new Data();
+		data.setId(2);
+		Data d = session.get(Data.class, data.getId());
+		System.out.println("Name : "+d.getPerson().getName());
+		System.out.println("Age : "+d.getAge());
+		d.getPerson().setName("mosta");
+		d.setAge("19");
+		 */
+		/*
+		Person p = new Person();
+		p.setId(1);
+		Person person = session.get(Person.class, p.getId());
+		session.delete(person);
 		*/
 	}
 
