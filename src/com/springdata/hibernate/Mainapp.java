@@ -19,7 +19,9 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import com.springdata.hibernate.model.Car;
 import com.springdata.hibernate.model.Client;
+import com.springdata.hibernate.model.Color;
 import com.springdata.hibernate.model.Data;
 import com.springdata.hibernate.model.Info;
 import com.springdata.hibernate.model.Person;
@@ -32,8 +34,8 @@ public class Mainapp {
 		
 		SessionFactory factory = new Configuration ()
         						.configure("hibernate.cfg.xml")
-        						.addAnnotatedClass(Student.class)
-        						.addAnnotatedClass(Info.class)
+        						.addAnnotatedClass(Car.class)
+        						.addAnnotatedClass(Color.class)
         						.buildSessionFactory();
 		
 		
@@ -42,49 +44,52 @@ public class Mainapp {
 		int id = 2;
 		try {
 			session.beginTransaction();
+		
 			/*
-			 * Add data  (many to one - one to many)
-			Student student = new Student();
-			student.setName("momo");
-			
-			Info info1 = new Info();
-			info1.setPhone("01234452424");
-			info1.setStudent(student);
-			
-			Info info2 = new Info();
-			info2.setPhone("015344520d00");
-			info2.setStudent(student);
-			
-			student.getInfos().add(info1);
-			student.getInfos().add(info2);
-			session.save(student);
-			*/
+			 * Add data (ManyToMany)
+			Car car1 = new Car("car1");
+			Car car2 = new Car("car2");
+			Car car3 = new Car("car3");
+			///////////////////////////////////
+			Color red = new Color("red");
+			Color green = new Color("green");
+			Color white = new Color("white");
+			/////////////////////////////
+			car1.getColors().add(red);
+			car1.getColors().add(green);
+			car1.getColors().add(white);
+			/////////////////////////
+			car2.getColors().add(red);
+			car2.getColors().add(green);
+			car2.getColors().add(white);
+			/////////////////////////
+			car3.getColors().add(red);
+			car3.getColors().add(green);
+			car3.getColors().add(white);
+			/////////////////////////
+			session.save(car1);
+			session.save(car2);
+			session.save(car3);
+			 */
 			/*
-			 *  Get data (many to one - one to many)
-			Student student = new Student();
-			student = session.get(Student.class, id);
-			
-			System.out.println(student.getName());
-			
-			for(Info info : student.getInfos()) {
-				System.out.println(info.getPhone());
+			 * Get Data (ManyToMany)
+			 * 
+			Car car = session.get(Car.class, id);
+			session.close();
+			System.out.println(car.getName());
+			for(Color color : car.getColors()) {
+				System.out.println(color.getName());
 			}
 			*/
 			/*
-			 * Update data (many to one - one to many)
-			Student student = session.get(Student.class, id);
-			
-			student.setName("Mo salaaah");
-			student.getInfos().get(0).setPhone("012");
-			student.getInfos().get(2).setPhone("010");
+			 * Edit data (ManyToMany)
+			 * 
+			Car car = session.get(Car.class, id);
+			car.setName("new car");
+			car.getColors().get(2).setName("new color");
 			*/
-			/*
-			 * Delete data (many to one - one to many)
-			Student student = session.get(Student.class, id);
-			session.delete(student);
-			*/
-			Student student = session.get(Student.class, id);
-			
+			Car car = session.get(Car.class, id);
+			session.delete(car);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println(e.toString());
@@ -241,6 +246,48 @@ public class Mainapp {
 		p.setId(1);
 		Person person = session.get(Person.class, p.getId());
 		session.delete(person);
+		*/
+		
+		/*
+		 * Add data  (many to one - one to many)
+		Student student = new Student();
+		student.setName("momo");
+		
+		Info info1 = new Info();
+		info1.setPhone("01234452424");
+		info1.setStudent(student);
+		
+		Info info2 = new Info();
+		info2.setPhone("015344520d00");
+		info2.setStudent(student);
+		
+		student.getInfos().add(info1);
+		student.getInfos().add(info2);
+		session.save(student);
+		*/
+		/*
+		 *  Get data (many to one - one to many)
+		Student student = new Student();
+		student = session.get(Student.class, id);
+		
+		System.out.println(student.getName());
+		
+		for(Info info : student.getInfos()) {
+			System.out.println(info.getPhone());
+		}
+		*/
+		/*
+		 * Update data (many to one - one to many)
+		Student student = session.get(Student.class, id);
+		
+		student.setName("Mo salaaah");
+		student.getInfos().get(0).setPhone("012");
+		student.getInfos().get(2).setPhone("010");
+		*/
+		/*
+		 * Delete data (many to one - one to many)
+		Student student = session.get(Student.class, id);
+		session.delete(student);
 		*/
 	}
 
